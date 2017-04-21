@@ -1,4 +1,4 @@
 node_modules
-src
-yarn.lock
 .idea
+yarn.lock
+src

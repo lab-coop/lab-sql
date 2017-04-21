@@ -20,7 +20,6 @@
     ]
   },
   "dependencies": {
-    "lodash": "^4.17.4",
     "lodash.once": "^4.1.1",
     "sequelize": "^3.30.3",
     "statecontainer": "^2.0.0"
