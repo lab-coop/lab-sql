@@ -1,5 +1,4 @@
 {
-  "author": "denes.pal@lab.coop",
   "name": "lab-sql",
   "version": "1.2.1",
   "main": "lib/index.js",
