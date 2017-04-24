@@ -8,7 +8,7 @@ const modelRelationRegisters = state.store('db:modelRelationRegisters', []);
 const connections = state.store('db:connections');
 const models = state.store('db:models');
 
-import type { ModelDefinition, Model, Connection } from './types';
+import type { ModelDefinition, ModelDefinitionOptions, Model, Connection } from './types';
 
 module.exports = function(config: { get: (key: string) => any }, logger: { debug: (message: string) => void }) {
 
@@ -32,11 +32,12 @@ module.exports = function(config: { get: (key: string) => any }, logger: { debug
   async function registerModel(
     modelName: string,
     modelDefinition: ModelDefinition,
+    modelDefinitionOptions: ModelDefinitionOptions = {},
     registerRelationsCallback: () => Promise<void>)
   {
     await modelRelationRegisters.push(registerRelationsCallback);
     const connection = await getConnection(getConnString(), {});
-    const model = await connection.define(modelName, modelDefinition);
+    const model = await connection.define(modelName, modelDefinition, modelDefinitionOptions);
     await model.sync();
     const modelKey = getModelKey(modelName);
     await models.set(modelKey, model);

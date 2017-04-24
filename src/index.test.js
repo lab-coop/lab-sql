@@ -54,9 +54,9 @@ describe('lab-sql', () => {
       lastName: Sequelize.STRING
     };
 
-    const model1 = await sqlDb.registerModel('model1', modelDefinition1, registerSpy1);
-    const model2 = await sqlDb.registerModel('model2', modelDefinition2, registerSpy2);
-    const model3 = await sqlDb.registerModel('model3', modelDefinition3, registerSpy3);
+    const model1 = await sqlDb.registerModel('model1', modelDefinition1, {}, registerSpy1);
+    const model2 = await sqlDb.registerModel('model2', modelDefinition2, {}, registerSpy2);
+    const model3 = await sqlDb.registerModel('model3', modelDefinition3, {}, registerSpy3);
 
     await sqlDb.wireTogether();
     await sqlDb.wireTogether();
