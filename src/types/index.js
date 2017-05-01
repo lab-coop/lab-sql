@@ -15,6 +15,6 @@ export type ModelDefinitionOptions = {
 }
 
 export type Connection = {
-  define: () => Model
+  define: () => Model,
+  query: () => Promise<[]>
 }
-

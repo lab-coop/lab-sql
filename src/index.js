@@ -15,10 +15,16 @@ module.exports = function(config: { get: (key: string) => any }, logger: { debug
   const wireTogether = once(runAllRegisterRelationsCallback);
 
   return {
+    selectDatabase,
     registerModel,
     getModel,
     wireTogether
   };
+
+  async function selectDatabase(database: string): Promise<[]> {
+    const connection = await getConnection(getConnString(), {});
+    return connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`; USE \`${database}\`;`);
+  }
 
   function runAllRegisterRelationsCallback(): Promise<void> {
     return Promise.all(modelRelationRegisters.get()
