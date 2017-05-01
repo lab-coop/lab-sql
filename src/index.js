@@ -26,7 +26,7 @@ module.exports = function(config: { get: (key: string) => any }, logger: { debug
 
   async function selectDatabase(database: string): Promise<[]> {
     const connection = await getConnection(getConnString(), {});
-    return connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`; USE \`${database}\`;`);
+    return connection.query(`USE \`${database}\`;`);
   }
 
   function getModelsArray(): any[] {
