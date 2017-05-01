@@ -12,7 +12,10 @@ import type { ModelDefinition, ModelDefinitionOptions, Model, Connection } from 
 
 module.exports = function(config: { get: (key: string) => any }, logger: { debug: (message: string) => void }) {
 
-  const wireTogether = once(runAllRegisterRelationsCallback);
+  const wireTogether = once(async () => {
+    await syncModels();
+    await runAllRegisterRelationsCallback();
+  });
 
   return {
     selectDatabase,
@@ -24,6 +27,15 @@ module.exports = function(config: { get: (key: string) => any }, logger: { debug
   async function selectDatabase(database: string): Promise<[]> {
     const connection = await getConnection(getConnString(), {});
     return connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`; USE \`${database}\`;`);
+  }
+
+  function getModelsArray(): any[] {
+    return Object.values(models.get());
+  }
+
+  function syncModels(): Promise<Array<mixed>> {
+    return Promise.all(getModelsArray()
+      .map(model => model.sync()));
   }
 
   function runAllRegisterRelationsCallback(): Promise<void> {
@@ -44,7 +56,6 @@ module.exports = function(config: { get: (key: string) => any }, logger: { debug
     await modelRelationRegisters.push(registerRelationsCallback);
     const connection = await getConnection(getConnString(), {});
     const model = await connection.define(modelName, modelDefinition, modelDefinitionOptions);
-    await model.sync();
     const modelKey = getModelKey(modelName);
     await models.set(modelKey, model);
     return model;
